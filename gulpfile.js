@@ -116,7 +116,6 @@ gulp.task( 'copy:fonts', function() {
 
 gulp.task( 'scss', function () {
     return gulp.src( paths.scss.appFile )
-        .pipe( plugins.plumber( onError ) )
         .pipe( plugins.inject( gulp.src( paths.scss.sources, { read: false } ), {
             starttag: '// inject:{{ext}}',
             endtag: '// endinject',
@@ -126,13 +125,13 @@ gulp.task( 'scss', function () {
             },
             relative: true
         } ) )
-        .pipe( plugins.sass() )
+        .pipe( plugins.sass().on( 'error', plugins.sass.logError ) )
         .pipe( plugins.autoprefixer( {
             browsers: gulpConfig.autoprefixer.browsers,
             cascade: gulpConfig.autoprefixer.cascade
         } ) )
         .pipe( gulp.dest( paths.scss.dist ) )
-        .pipe( browserSync.reload( { stream:true } ) );
+        .pipe( browserSync.reload( { stream: true } ) );
 });
 
 
@@ -174,7 +173,7 @@ gulp.task( 'inject:development', function() {
         .pipe( plugins.inject( gulp.src( paths.libs.sources, { read: false } ), { name: 'libs' } ) )
         .pipe( plugins.inject( gulp.src( paths.scripts.sources, { read: false } ), { name: 'sources' } ) )
         .pipe( plugins.inject( gulp.src( path.join( paths.templates.dist, 'templates.js' ), { read: false } ), { name: 'templates', relative: true } ) )
-        .pipe( plugins.inject( gulp.src( path.join( paths.scss.dist, '*.css' ), { read: false } ) ) )
+        .pipe( plugins.inject( gulp.src( path.join( paths.scss.dist, '*.css' ), { read: false } ), { relative: true } ) )
         .pipe( plugins.inject( svgFiles, { transform: svgFileContents } ))
         .pipe( gulp.dest( basePaths.dist ) )
         .pipe( browserSync.reload( { stream:true } ) );
@@ -237,6 +236,7 @@ gulp.task( 'lint', function() {
     }
 
     return gulp.src( paths.scripts.sources )
+        .pipe( plugins.plumber( onError ))
         .pipe( plugins.jshint( '.jshintrc' ) )
         .pipe( plugins.jscs({
             configPath: '.jscsrc'
@@ -270,7 +270,7 @@ gulp.task( 'watch:svgs', function() {
 
 gulp.task( 'watch:styles', function() {
     plugins.watch( paths.scss.sources, function() {
-        runSequence( 'styles' )
+        runSequence( 'scss' )
     });
 });
 
@@ -282,7 +282,7 @@ gulp.task( 'watch:templates', function() {
 
 gulp.task( 'watch:codeStyle', function() {
     plugins.watch( paths.scripts.sources, function() {
-        runSequence( 'jscs', 'jshint' )
+        runSequence( 'lint' )
     });
 });
 
