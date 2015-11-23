@@ -4,4 +4,4 @@
 dist/
 node_modules/
 
-gulp/defaultConfig.json
+gulp/config.json
