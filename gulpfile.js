@@ -33,6 +33,7 @@ var paths = {
     },
     scripts: {
         sources:    [
+            path.join( '!' + basePaths.sources, '**/*Test.js'),
             path.join( basePaths.sources, '**/*Module.js'),
             path.join( basePaths.sources, 'components/**/AppModules.js' ),
             path.join( basePaths.sources, 'components/**/*.js' ),
@@ -297,12 +298,11 @@ gulp.task( 'watch:index', function() {
 //  Serve website
 // ------------------------------------------------------------
 
-gulp.task('browsersync', function() {
-    browserSync.init( {
-        server: {
-            baseDir: [ basePaths.dist, basePaths.root ],
-            open: gulpConfig.browsersync.browser ? true : false
-        },
+gulp.task('browsersync', function () {
+    browserSync.init({
+        server: !gulpConfig.browsersync.proxy ? { baseDir: [basePaths.dist, basePaths.root] } : false,
+        proxy: gulpConfig.browsersync.proxy ? gulpConfig.browsersync.proxy : false,
+        open: gulpConfig.browsersync.open,
         browser: gulpConfig.browsersync.browser,
         notify: gulpConfig.browsersync.notify
     });
@@ -312,6 +312,7 @@ gulp.task('browsersync', function() {
 // ------------------------------------------------------------
 //  Minify task
 // ------------------------------------------------------------
+
 
 gulp.task( 'minify', function() {
     return gulp.src( path.join( basePaths.dist, 'index.html' ) )
@@ -371,8 +372,8 @@ gulp.task( 'production', function( done ) {
         'scss',
         'templatecache',
         'inject:production',
-        'projectPrefix',
         'minify',
+        'projectPrefix',
         'clean:tempFiles',
         done
     )

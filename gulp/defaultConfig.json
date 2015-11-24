@@ -1,7 +1,9 @@
 {
   "browsersync": {
     "browser": "google chrome",
-    "notify": false
+    "notify": false,
+    "open": true,
+    "proxy": "localhost:8080"
   },
   "autoprefixer": {
     "browsers": [ "last 2 versions" ],
