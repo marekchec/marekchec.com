@@ -1,0 +1,21 @@
+.PFX-navigation {
+    ul {
+        li {
+            display: inline-block;
+        }
+    }
+}
+
+.PFX-navigation-main {
+    margin: 2rem 0;
+
+    ul {
+        text-align: center;
+
+        li {
+            font-size: 1.8rem;
+            font-weight: 200;
+            margin: 0 1.5rem;
+        }
+    }
+}

@@ -35,9 +35,8 @@ var paths = {
         sources:    [
             path.join( '!' + basePaths.sources, '**/*Test.js'),
             path.join( basePaths.sources, '**/*Module.js'),
-            path.join( basePaths.sources, 'components/**/AppModules.js' ),
-            path.join( basePaths.sources, 'components/**/*.js' ),
-            path.join( basePaths.sources, 'directives/**/*.js' )
+            path.join( basePaths.sources, '**/*.js' ),
+            path.join( basePaths.sources, 'components/**/AppModules.js' )
         ]
     },
     libs: {
@@ -60,6 +59,8 @@ var paths = {
     scss: {
         appFile:    path.join( basePaths.sources, 'components/app/styles/app.scss' ),
         sources:    [
+            path.join( basePaths.sources, '**/_reset.scss' ),
+            path.join( basePaths.sources, '**/_variables.scss' ),
             path.join( basePaths.sources, '**/_base.scss' ),
             path.join( basePaths.sources, '**/_*.scss' )
         ],
@@ -73,7 +74,6 @@ var paths = {
         dist:       path.join( basePaths.dist, 'scripts' )
     }
 };
-
 
 // ------------------------------------------------------------
 //  Clean tasks
@@ -116,8 +116,11 @@ gulp.task( 'copy:fonts', function() {
 // ------------------------------------------------------------
 
 gulp.task( 'scss', function () {
+    var orderedScssFiles = gulp.src( paths.scss.sources, { read:false } )
+        .pipe( plugins.order( paths.scss.sources, { base: './' } ) );
+
     return gulp.src( paths.scss.appFile )
-        .pipe( plugins.inject( gulp.src( paths.scss.sources, { read: false } ), {
+        .pipe( plugins.inject( orderedScssFiles, {
             starttag: '// inject:{{ext}}',
             endtag: '// endinject',
             transform: function( filepath ) {
@@ -160,16 +163,16 @@ gulp.task( 'svgstore', function() {
 //  Inject tasks
 // ------------------------------------------------------------
 
+var svgFiles = gulp.src( paths.svgs.sources )
+    .pipe( plugins.rename( { prefix: svgPrefix } ) )
+    .pipe( plugins.svgmin() )
+    .pipe( plugins.svgstore( { inlineSvg: true } ) );
+
+function svgFileContents ( filePath, file ) {
+    return file.contents.toString();
+};
+
 gulp.task( 'inject:development', function() {
-    var svgFiles = gulp.src( paths.svgs.sources )
-        .pipe( plugins.rename( { prefix: svgPrefix } ) )
-        .pipe( plugins.svgmin() )
-        .pipe( plugins.svgstore( { inlineSvg: true } ) );
-
-    function svgFileContents ( filePath, file ) {
-        return file.contents.toString();
-    };
-
     return gulp.src( path.join( basePaths.dist, 'index.html' ) )
         .pipe( plugins.inject( gulp.src( paths.libs.sources, { read: false } ), { name: 'libs' } ) )
         .pipe( plugins.inject( gulp.src( paths.scripts.sources, { read: false } ), { name: 'sources' } ) )
@@ -181,15 +184,6 @@ gulp.task( 'inject:development', function() {
 });
 
 gulp.task( 'inject:production', function() {
-    var svgFiles = gulp.src( paths.svgs.sources )
-        .pipe( plugins.rename( { prefix: svgPrefix } ) )
-        .pipe( plugins.svgmin() )
-        .pipe( plugins.svgstore( { inlineSvg: true } ) );
-
-    function svgFileContents ( filePath, file ) {
-        return file.contents.toString();
-    };
-
     return gulp.src( path.join( basePaths.dist, 'index.html' ) )
         .pipe( plugins.inject( gulp.src( paths.libs.sources, { read: false } ), { name: 'libs', relative: true } ) )
         .pipe( plugins.inject( gulp.src( paths.scripts.sources, { read: false } ), { name: 'sources', relative: true } ) )

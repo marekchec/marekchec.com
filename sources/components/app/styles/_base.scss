@@ -1,3 +1,15 @@
+* ,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
 .PFX-html {
-    background: #ff0000;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 10px;
+    height: 100%;
+}
+
+.PFX-body {
+    height: $footerHeight;
 }
