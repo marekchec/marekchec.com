@@ -1,6 +1,6 @@
-.PFX-footer {
-    background: #f00;
-    height: 150px;
+.PFX-footer,
+.push {
+    height: $footerHeight;
 }
 
 .PFX-footer_allRightsReserved {

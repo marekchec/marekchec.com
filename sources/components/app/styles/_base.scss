@@ -11,5 +11,11 @@
 }
 
 .PFX-body {
-    height: $footerHeight;
+    height: 100%;
+}
+
+.PFX-main {
+    margin: 0 auto (-$footerHeight);
+    min-height: 100%;
+    padding: $headerHeight 0 0;
 }
