@@ -33,10 +33,10 @@ var paths = {
     },
     scripts: {
         sources:    [
-            path.join( '!' + basePaths.sources, '**/*Test.js'),
             path.join( basePaths.sources, '**/*Module.js'),
-            path.join( basePaths.sources, '**/*.js' ),
-            path.join( basePaths.sources, 'components/**/AppModules.js' )
+            path.join( basePaths.sources, 'components/**/AppModules.js' ),
+            path.join( basePaths.sources, 'components/**/*.js' ),
+            path.join( '!' + basePaths.sources, '**/*Test.js')
         ]
     },
     libs: {
@@ -62,7 +62,7 @@ var paths = {
             path.join( basePaths.sources, '**/_reset.scss' ),
             path.join( basePaths.sources, '**/_variables.scss' ),
             path.join( basePaths.sources, '**/_base.scss' ),
-            path.join( basePaths.sources, '**/_*.scss' )
+            path.join( basePaths.sources, '**/_*.scss' ),
         ],
         dist:   	path.join( basePaths.dist, 'styles' )
     },
@@ -117,7 +117,7 @@ gulp.task( 'copy:fonts', function() {
 
 gulp.task( 'scss', function () {
     var orderedScssFiles = gulp.src( paths.scss.sources, { read:false } )
-        .pipe( plugins.order( paths.scss.sources, { base: './' } ) );
+        .pipe( plugins.order( paths.scss.sources, { base: basePaths.root } ) );
 
     return gulp.src( paths.scss.appFile )
         .pipe( plugins.inject( orderedScssFiles, {
@@ -163,6 +163,16 @@ gulp.task( 'svgstore', function() {
 //  Inject tasks
 // ------------------------------------------------------------
 
+function getOrderedScriptFiles() {
+    return gulp.src( paths.scripts.sources, { read:false } )
+        .pipe( plugins.order( paths.scripts.sources, { base: basePaths.root } ) );
+}
+
+function getOrderedLibFiles() {
+    return gulp.src( paths.libs.sources, { read: false } )
+        .pipe( plugins.order( paths.libs.sources, { base: basePaths.root } ) );
+}
+
 var svgFiles = gulp.src( paths.svgs.sources )
     .pipe( plugins.rename( { prefix: svgPrefix } ) )
     .pipe( plugins.svgmin() )
@@ -174,8 +184,8 @@ function svgFileContents ( filePath, file ) {
 
 gulp.task( 'inject:development', function() {
     return gulp.src( path.join( basePaths.dist, 'index.html' ) )
-        .pipe( plugins.inject( gulp.src( paths.libs.sources, { read: false } ), { name: 'libs' } ) )
-        .pipe( plugins.inject( gulp.src( paths.scripts.sources, { read: false } ), { name: 'sources' } ) )
+        .pipe( plugins.inject( getOrderedLibFiles(), { name: 'libs' } ) )
+        .pipe( plugins.inject( getOrderedScriptFiles(), { name: 'sources' } ) )
         .pipe( plugins.inject( gulp.src( path.join( paths.templates.dist, 'templates.js' ), { read: false } ), { name: 'templates', relative: true } ) )
         .pipe( plugins.inject( gulp.src( path.join( paths.scss.dist, '*.css' ), { read: false } ), { relative: true } ) )
         .pipe( plugins.inject( svgFiles, { transform: svgFileContents } ))
@@ -185,8 +195,8 @@ gulp.task( 'inject:development', function() {
 
 gulp.task( 'inject:production', function() {
     return gulp.src( path.join( basePaths.dist, 'index.html' ) )
-        .pipe( plugins.inject( gulp.src( paths.libs.sources, { read: false } ), { name: 'libs', relative: true } ) )
-        .pipe( plugins.inject( gulp.src( paths.scripts.sources, { read: false } ), { name: 'sources', relative: true } ) )
+        .pipe( plugins.inject( getOrderedLibFiles(), { name: 'libs', relative: true } ) )
+        .pipe( plugins.inject( getOrderedScriptFiles(), { name: 'sources', relative: true } ) )
         .pipe( plugins.inject( gulp.src( path.join( paths.templates.dist, 'templates.js' ), { read: false } ), { name: 'templates', relative: true } ) )
         .pipe( plugins.inject( gulp.src( path.join( paths.scss.dist, '*.css' ), { read: false } ), { relative: true } ) )
         .pipe( plugins.inject( svgFiles, { transform: svgFileContents } ))
