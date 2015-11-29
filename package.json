@@ -8,6 +8,7 @@
   },
   "engines": {},
   "devDependencies": {
+    "angular-sanitize": "^1.4.8",
     "angular-translate": "^2.8.1",
     "browser-sync": "^2.10.0",
     "del": "^2.1.0",
