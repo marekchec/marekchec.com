@@ -8,9 +8,15 @@
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 10px;
     height: 100%;
+
+    a {
+        color: $darkGrey;
+        text-decoration: none;
+    }
 }
 
 .PFX-body {
+    border-top: 7px solid #222222;
     height: 100%;
 }
 

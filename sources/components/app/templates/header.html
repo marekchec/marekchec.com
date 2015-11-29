@@ -1,11 +1,11 @@
 <div class="PFX-headerInner">
-    <div class="PFX-header_name">marekchec.com</div>
-    <div class="PFX-header_topLine"></div>
+    <!--<div class="PFX-header_name">marekchec.com</div>-->
+    <!--<div class="PFX-header_topLine"></div>-->
     <nav class="PFX-navigation PFX-navigation-main">
         <ul>
-            <li>Home</li>
-            <li>That's me</li>
-            <li>Get in touch</li>
+            <li><a data-ui-sref="{{ ::routeConstant.START }}" data-ui-sref-active="active">{{ 'START' | translate }}</a></li>
+            <li><a data-ui-sref="{{ ::routeConstant.ABOUT }}" data-ui-sref-active="active">{{ 'ABOUT' | translate }}</a></li>
+            <li><a data-ui-sref="{{ ::routeConstant.CONTACT }}" data-ui-sref-active="active">{{ 'CONTACT' | translate }}</a></li>
         </ul>
     </nav>
 </div>

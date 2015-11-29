@@ -18,13 +18,15 @@
         <div style="height: 0; width: 0; position: absolute; visibility: hidden">
             <!-- inject:svg --><!-- endinject -->
         </div>
-        <div class="PFX-page">
-            <header class="PFX-header" data-ui-view="header"></header>
 
-            <div class="PFX-main" data-ui-view="main"></div>
+        <header class="PFX-header" data-ui-view="header"></header>
 
-            <footer class="PFX-footer" data-ui-view="footer"></footer>
+        <div class="PFX-main">
+            <div data-ui-view="main"></div>
+            <svg-icon name="logo"></svg-icon>
         </div>
+
+        <footer class="PFX-footer" data-ui-view="footer"></footer>
 
         <!-- build:js scripts/scripts.js -->
             <!-- libs:js --><!-- endinject -->

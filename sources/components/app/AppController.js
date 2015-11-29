@@ -7,7 +7,11 @@
 
     /* @ngInject */
 
-    function AppController() {
+    function AppController(
+        $rootScope,
+        $translate,
+        AppRouteConstant
+    ) {
 
         // ------------------------------------------------------------
         //  Private methods
@@ -19,6 +23,9 @@
          */
         function _initialize() {
 
+            $rootScope.routeConstant = AppRouteConstant;
+
+            $rootScope.currentLanguage = $translate.proposedLanguage();
         }
 
         // ------------------------------------------------------------

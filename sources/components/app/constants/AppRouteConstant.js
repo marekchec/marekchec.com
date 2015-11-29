@@ -5,7 +5,9 @@
         .module( 'PFX.app' )
         .constant( 'AppRouteConstant', {
             BASE:       'base',
-            START:      'base.start'
+            START:      'base.start',
+            CONTACT:    'base.contact',
+            ABOUT:      'base.about'
         } );
 
 }());
