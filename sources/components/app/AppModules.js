@@ -3,6 +3,7 @@
 
     angular.module( 'PFX.app', [
         'ui.router',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'SvgIcon'
     ] );
 }());
