@@ -2,6 +2,7 @@
     'use strict';
 
     angular.module( 'PFX.app', [
-        'ui.router'
+        'ui.router',
+        'pascalprecht.translate'
     ] );
 }());
