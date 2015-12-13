@@ -1,0 +1,9 @@
+.PFX-logo {
+    @include centerElement(true, true);
+
+    svg {
+        $svgSize: 10rem;
+        height: $svgSize;
+        width: $svgSize;
+    }
+}

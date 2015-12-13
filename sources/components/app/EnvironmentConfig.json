@@ -1,0 +1,12 @@
+{
+  "development": {
+    "EnvironmentConfig": {
+      "LOCALES_DIRECTORY": "../../sources/"
+    }
+  },
+  "production": {
+    "EnvironmentConfig": {
+      "LOCALES_DIRECTORY": "../../"
+    }
+  }
+}

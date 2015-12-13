@@ -1,25 +1,62 @@
-.PFX-navigation {
+.PFX-navigation-main {
+    float: left;
+
     ul {
+        margin: 0 0 3rem;
+
         li {
             display: inline-block;
+
+            a {
+                display: inline-block;
+                font-size: 1.5rem;
+                font-weight: 300;
+                margin: 0 3rem 0 0;
+                padding: 0 .5rem;
+                position: relative;
+                transition: .4s all ease;
+
+                &:after {
+                    background: transparent;
+                    content: '';
+                    display: block;
+                    height: 1px;
+                    margin: .4rem auto;
+                    transition: .4s all ease;
+                    width: 0px;
+                }
+
+                &.active,
+                &:hover {
+                    &:after {
+                        width: 100%;
+                        background: $mainColor;
+                    }
+                }
+            }
         }
     }
 }
 
-.PFX-navigation-main {
+.PFX-navigation-social {
+    float: right;
+
     ul {
-        text-align: center;
-
         li {
-            a {
-                font-size: 1.7rem;
-                font-weight: 200;
-                margin: 0 2rem;
-                padding: 0 .5rem;
+            display: inline-block;
 
-                &.active {
-                    border-bottom: 1px solid $lightGrey;
-                    font-weight: 400;
+            a {
+                margin: 0 0 0 3rem;
+
+                svg {
+                    $iconSize: 2rem;
+                    height: $iconSize;
+                    width: $iconSize;
+
+
+                        path {
+                            fill: #434343;
+                        }
                 }
             }
         }

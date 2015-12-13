@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-        .module( 'PFX.app' )
-        .config( AppConfig );
+        .module('PFX.app')
+        .config(AppConfig);
 
     /* @ngInject */
 
@@ -11,10 +11,11 @@
         $stateProvider,
         $urlRouterProvider,
         $urlMatcherFactoryProvider,
-        AppRouteConstant ) {
+        AppRouteConstant
+    ) {
 
         $urlRouterProvider.otherwise('/');
-        $urlMatcherFactoryProvider.strictMode( false );
+        $urlMatcherFactoryProvider.strictMode(false);
 
         // -------------------------------------------------------------------
         // Base route

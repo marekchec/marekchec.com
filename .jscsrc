@@ -11,7 +11,7 @@
     "requireOperatorBeforeLineBreak": true,
     "requireCamelCaseOrUpperCaseIdentifiers": true,
     "maximumLineLength": {
-      "value": 80,
+      "value": 120,
       "allExcept": ["comments", "regex"]
     },
     "validateIndentation": 4,
@@ -80,7 +80,6 @@
         "checkRedundantReturns": true,
         "requireReturnTypes": true,
         "checkTypes": true,
-        "checkRedundantAccess": true,
-        "requireNewlineAfterDescription": true
+        "checkRedundantAccess": true
     }
 }

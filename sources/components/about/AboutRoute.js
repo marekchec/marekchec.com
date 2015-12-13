@@ -3,19 +3,20 @@
 
     angular
         .module('PFX.app')
-        .config(StartRoute);
+        .config(AboutRoute);
 
     /* @ngInject */
 
-    function StartRoute(
+    function AboutRoute(
         $stateProvider,
         AppRouteConstant
     ) {
-        $stateProvider.state(AppRouteConstant.START, {
-            url: '',
+        $stateProvider.state(AppRouteConstant.ABOUT, {
+            url: '/about',
             views: {
                 'main@': {
-                    templateUrl: '/components/start/start.html'
+                    controller: 'AboutController',
+                    templateUrl: '/components/about/about.html'
                 }
             }
         });

@@ -3,11 +3,11 @@
 
     angular
         .module('PFX.app')
-        .controller('AboutController', AboutController);
+        .controller('ContactController', ContactController);
 
     /* @ngInject */
 
-    function AboutController() {
+    function ContactController() {
 
         // ------------------------------------------------------------
         //  Private methods

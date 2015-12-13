@@ -2,8 +2,8 @@
     'use strict';
 
     angular
-        .module( 'PFX.app' )
-        .controller( 'StartController', StartController );
+        .module('PFX.app')
+        .controller('StartController', StartController);
 
     /* @ngInject */
 
