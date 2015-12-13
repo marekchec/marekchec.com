@@ -1,7 +1,0 @@
-.DS_Store
-.idea/
-
-dist/
-node_modules/
-
-gulp/config.json
