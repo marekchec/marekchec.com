@@ -2,9 +2,16 @@
   "name": "marekchec.com",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "postinstall": "tsd install"
+  },
   "dependencies": {
-    "angular2": "^2.0.0-alpha.50",
-    "systemjs": "^0.19.6"
+    "angular2": "2.0.0-beta.0",
+    "es6-shim": "^0.33.13",
+    "reflect-metadata": "^0.1.2",
+    "rxjs": "^5.0.0-beta.0",
+    "systemjs": "^0.19.6",
+    "zone.js": "^0.5.10"
   },
   "engines": {},
   "devDependencies": {
@@ -12,16 +19,19 @@
     "browser-sync": "^2.10.0",
     "del": "^2.2.0",
     "es6-promise": "^3.0.2",
-    "es6-shim": "^0.33.13",
     "gulp": "^3.9.0",
+    "gulp-inject": "^3.0.0",
     "gulp-load-plugins": "^1.1.0",
+    "gulp-order": "^1.1.1",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.1.1",
+    "gulp-svgmin": "^1.2.0",
+    "gulp-svgstore": "^5.0.5",
     "gulp-typescript": "^2.10.0",
+    "gulp-watch": "^4.3.5",
     "reflect-metadata": "^0.1.2",
     "run-sequence": "^1.1.5",
-    "rxjs": "^5.0.0-alpha.14",
     "ts-node": "^0.5.4",
-    "typescript": "^1.7.3",
-    "zone.js": "^0.5.10"
+    "typescript": "^1.7.3"
   }
 }

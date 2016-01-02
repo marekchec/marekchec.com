@@ -1,23 +1,21 @@
-import * as gulp from 'gulp';
-import {join} from 'path';
-import * as del from 'del';
-import * as browsersync from 'browser-sync';
-import * as config from './gulpfile.config';
-import * as runSequence from 'run-sequence';
+import * as gulp            from 'gulp';
+import * as del             from 'del';
+import {join}               from 'path';
+import * as browsersync     from 'browser-sync';
+import * as runSequence     from 'run-sequence';
+import * as config          from './gulpfile.config';
 
-let gulpLoadPlugins = require("gulp-load-plugins");
+let plugins = require("gulp-load-plugins")();
 
-const plugins = gulpLoadPlugins({
-    pattern: ['gulp-*', 'gulp.*'],
-    replaceString: /\bgulp[\-.]/
-});
 
 // -------------------------------------------------------------------
 //  Clean tasks
 // -------------------------------------------------------------------
 
-gulp.task('clean:dist', done => {
-    del(join(config.DEST_DIR)).then(() => done());
+gulp.task('clean:dist', function(done) {
+    del(config.DEST_DIRECTORY).then(function() {
+        done();
+    })
 });
 
 
@@ -25,30 +23,44 @@ gulp.task('clean:dist', done => {
 //  Copy tasks
 // -------------------------------------------------------------------
 
-gulp.task('copy:index', () => {
-    return gulp.src(join(config.SOURCES_DIR, 'index.html'))
-        .pipe(gulp.dest(config.DEST_DIR));
+gulp.task('copy:templates', function() {
+    return gulp.src(join(config.SOURCES_DIRECTORY, '**/*.html'), {base: config.SOURCES_DIRECTORY})
+        .pipe(gulp.dest(config.DEST_DIRECTORY));
 });
 
-//gulp.task( 'copy:images', function() {
-//    return gulp.src( paths.images.sources )
-//        .pipe( gulp.dest( paths.images.dist ) );
-//});
+gulp.task('copy:index', function() {
+    return gulp.src(join(config.SOURCES_DIRECTORY, 'index.html'))
+        .pipe(gulp.dest(config.DEST_DIRECTORY));
+});
 
-//gulp.task( 'copy:fonts', function() {
-//    return gulp.src( paths.fonts.sources )
-//        .pipe( gulp.dest( paths.fonts.dist ) )
-//});
+gulp.task('copy:images', function() {
+    return gulp.src(config.IMAGES_DIRECTORY)
+        .pipe(gulp.dest(config.DEST_DIRECTORY));
+});
+
+gulp.task('copy:fonts', function() {
+    return gulp.src(config.FONTS_DIRECTORY)
+        .pipe( gulp.dest(config.DEST_DIRECTORY));
+});
 
 
 // -------------------------------------------------------------------
 //  Compile scss files
 // -------------------------------------------------------------------
 
-gulp.task('scss', () => {
-    return gulp.src(join(config.SOURCES_DIR, '**/*.scss'))
+gulp.task('scss', function() {
+    return gulp.src(join(config.SOURCES_DIRECTORY, '**/*.scss'))
+        .pipe(plugins.inject(getOrderedScssReferences(), {
+            starttag: '// inject:{{ext}}',
+            endtag: '// endinject',
+            transform: function(filepath) {
+                filepath = filepath.replace('_', '');
+                return '@import "' + filepath + '";';
+            },
+            relative: true
+        }))
         .pipe(plugins.sass())
-        .pipe(gulp.dest(config.DEST_DIR))
+        .pipe(gulp.dest(config.DEST_DIRECTORY))
 });
 
 
@@ -56,14 +68,45 @@ gulp.task('scss', () => {
 //  Compile typescript files
 // -------------------------------------------------------------------
 
-gulp.task('typescript', () => {
+gulp.task('typescript', function() {
     var tsProject = plugins.typescript.createProject('tsconfig.json', {
         typescript: require('typescript')
     });
 
-    return gulp.src(join(config.SOURCES_DIR, '**/*.ts'))
+    return gulp.src(join(config.SOURCES_DIRECTORY, '**/*.ts'))
         .pipe(plugins.typescript(tsProject))
-        .pipe(gulp.dest(config.DEST_DIR))
+        .pipe(gulp.dest(config.DEST_DIRECTORY))
+        .pipe(browsersync.reload({stream: true}));
+});
+
+
+// -------------------------------------------------------------------
+//  Inject tasks
+// -------------------------------------------------------------------
+
+var svgFiles = gulp.src(join(config.SVGS_DIRECTORY, '*.svg'))
+    .pipe(plugins.rename({prefix: config.SVG_FILEPREFIX}))
+    .pipe(plugins.svgmin())
+    .pipe(plugins.svgstore({inlineSvg: true}));
+
+function svgFileContents(filePath, file) {
+    return file.contents.toString();
+}
+
+gulp.task('inject:development', function() {
+    return gulp.src(join(config.DEST_DIRECTORY, 'index.html'))
+        .pipe(plugins.inject(getOrderedShimsReferences(), {name: 'shims'}))
+        .pipe(plugins.inject(getOrderedLibReferences(), {name: 'libs'}))
+        .pipe(plugins.inject(gulp.src(join(config.DEST_DIRECTORY, '**/*.js')), {name: 'sources'}))
+        .pipe(plugins.inject(gulp.src(join(config.DEST_DIRECTORY, 'scripts/templates.js'), {read: false}), {
+            name: 'templates',
+            relative: true
+        }))
+        .pipe(plugins.inject(gulp.src(join(config.DEST_DIRECTORY, 'components/app/styles/*.css'), {read: false}), {relative: true}))
+        .pipe(plugins.inject(svgFiles, {transform: svgFileContents}))
+        .pipe(gulp.dest(config.DEST_DIRECTORY))
+        .pipe(browsersync.reload({stream: true}));
+
 });
 
 
@@ -71,14 +114,76 @@ gulp.task('typescript', () => {
 //  Browsersync
 // -------------------------------------------------------------------
 
-gulp.task('browsersync', () => {
+gulp.task('browsersync', function() {
     browsersync.init( {
         server: {
-            baseDir: [config.DEST_DIR, config.ROOT_DIR],
-            open: config.BROWSERSYNC.browser ? true : false
+            baseDir: config.BROWSERSYNC.baseDir
         },
         browser: config.BROWSERSYNC.browser,
         notify: config.BROWSERSYNC.notify
+    });
+
+    runSequence(
+        'watch:assets',
+        'watch:scripts',
+        'watch:svgs',
+        'watch:styles',
+        'watch:templates'
+    );
+});
+
+
+// -------------------------------------------------------------------
+//  Helper methods
+// -------------------------------------------------------------------
+
+function getOrderedLibReferences() {
+    return gulp.src(config.LIB_SOURCES, {read: false})
+        .pipe(plugins.order(config.LIB_SOURCES, {base: config.ROOT_DIRECTORY}));
+}
+
+function getOrderedShimsReferences() {
+    return gulp.src(config.SHIMS_SOURCES, {read: false})
+        .pipe(plugins.order(config.SHIMS_SOURCES, {base: config.ROOT_DIRECTORY}));
+}
+
+function getOrderedScssReferences() {
+    return gulp.src(config.SCSS_SOURCES, {read: false})
+        .pipe(plugins.order(config.SCSS_SOURCES, {base: config.ROOT_DIRECTORY}));
+}
+
+
+// -------------------------------------------------------------------
+//  Watcher
+// -------------------------------------------------------------------
+
+gulp.task('watch:assets', function() {
+    plugins.watch(config.IMAGES_DIRECTORY, { events: [ 'add', 'unlink' ] }, function() {
+        runSequence( 'copy:images' )
+    });
+});
+
+gulp.task('watch:scripts', function() {
+    plugins.watch( join(config.SOURCES_DIRECTORY, '**/*.ts'), function() {
+        runSequence( 'typescript' )
+    });
+});
+
+gulp.task('watch:svgs', function() {
+    plugins.watch(config.SVGS_DIRECTORY, { events: [ 'add', 'unlink' ] }, function() {
+        runSequence( 'inject:development' )
+    });
+} );
+
+gulp.task('watch:styles', function() {
+    plugins.watch( join(config.SOURCES_DIRECTORY, '**/*.scss'), function() {
+        runSequence( 'scss' )
+    });
+});
+
+gulp.task('watch:templates', function() {
+    plugins.watch( join(config.SOURCES_DIRECTORY, '**/*.html'), function() {
+        runSequence( 'copy:templates' )
     });
 });
 
@@ -87,11 +192,17 @@ gulp.task('browsersync', () => {
 //  Main tasks
 // -------------------------------------------------------------------
 
-gulp.task('default', done => {
+gulp.task('default', function(done) {
     runSequence(
         'clean:dist',
-        'copy:index',
-        'scss',
+        [
+            'copy:templates',
+            'copy:images',
+            'copy:fonts',
+            'scss',
+            'typescript'
+        ],
+        'inject:development',
         'browsersync',
         done
     );
