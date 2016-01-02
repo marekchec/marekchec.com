@@ -1,0 +1,53 @@
+.PFX-navigation-main {
+    float: left;
+    margin: 0 0 3rem;
+
+    a {
+        display: inline-block;
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin: 0 3rem 0 0;
+        padding: 0 .5rem;
+        position: relative;
+        transition: .4s all ease;
+
+        &:after {
+            background: transparent;
+            content: '';
+            display: block;
+            height: 1px;
+            margin: .4rem auto;
+            transition: .4s all ease;
+            width: 0px;
+        }
+
+        &.router-link-active,
+        &:hover {
+            &:after {
+                width: 100%;
+                background: $mainColor;
+            }
+        }
+    }
+}
+
+.PFX-navigation-social {
+    float: right;
+
+    a {
+        display: inline-block;
+        margin: 0 0 0 3rem;
+
+        svg {
+            $iconSize: 2rem;
+            height: $iconSize;
+            width: $iconSize;
+
+
+            path {
+                fill: #434343;
+            }
+        }
+    }
+
+}

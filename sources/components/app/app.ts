@@ -1,13 +1,22 @@
-import {Component, ViewEncapsulation} from 'angular2/angular2';
+import {Component, ViewEncapsulation} from 'angular2/core';
 import {
     RouteConfig,
     ROUTER_DIRECTIVES
 } from 'angular2/router';
 
+import {StartComponent} from '../start/start';
+import {AboutComponent} from '../about/about';
+
 @Component({
     selector: 'app',
-    template: '<h1>My First Angular 2 App</h1>'
+    templateUrl: './components/app/app.html',
+    encapsulation: ViewEncapsulation.None,
+    directives: [ROUTER_DIRECTIVES]
 })
 
+@RouteConfig([
+    { path: '/', component: StartComponent, as: 'Start' },
+    { path: '/about', component: AboutComponent, as: 'About' }
+])
 
 export class AppComponent {}

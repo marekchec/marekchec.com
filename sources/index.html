@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="PFX-html" lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>marekchec.com</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <base href="/">
 
         <!-- inject:css -->
         <!-- endinject -->
 
     </head>
-    <body>
-    <app>Loading...</app>
+    <body class="PFX-body">
+        <div style="height: 0; width: 0; position: absolute; visibility: hidden">
+            <!-- inject:svg -->
+            <!-- endinject -->
+        </div>
+            <app>Loading...</app>
 
-    <!-- shims:js -->
-    <!-- endinject -->
+        <!-- shims:js -->
+        <!-- endinject -->
 
+        <script>
+            System.config({
+                "defaultJSExtensions":true
+            })
+        </script>
 
-    <!-- libs:js -->
-    <!-- endinject -->
+        <!-- libs:js -->
+        <!-- endinject -->
 
-    <script>
-        System.import('bootstrap')
-            .catch(function(error) {
-                console.error(error, 'Report this error at https://github.com/mgechev/angular2-seed/issues');
+        <script>
+            System.import('bootstrap').catch(function(error) {
+                console.error('index.html:: ', error);
             });
-    </script>
-
-    <!-- inject:js -->
-    <!-- endinject -->
-
+        </script>
     </body>
 </html>

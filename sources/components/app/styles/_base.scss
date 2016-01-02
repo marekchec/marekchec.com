@@ -1,0 +1,21 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.PFX-html {
+    border-top: 0px solid $mainColor;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 10px;
+    height: 100%;
+
+    a {
+        color: $darkGrey;
+        text-decoration: none;
+    }
+}
+
+.PFX-body {
+    height: 100%;
+}
