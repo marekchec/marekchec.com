@@ -2,8 +2,8 @@ import {Component} from 'angular2/core';
 
 
 @Component({
-    selector: 'start',
-    templateUrl: './components/start/start.html',
-    styleUrls: ['./components/start/start.css']
+    selector: 'about',
+    templateUrl: './components/about/about.html',
+    styleUrls: ['./components/about/about.css']
 })
-export class StartComponent {}
+export class AboutComponent {}
