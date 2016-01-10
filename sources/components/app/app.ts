@@ -1,8 +1,5 @@
 import {Component, ViewEncapsulation} from 'angular2/core';
-import {
-    RouteConfig,
-    ROUTER_DIRECTIVES
-} from 'angular2/router';
+import {RouteConfig, ROUTER_DIRECTIVES} from 'angular2/router';
 
 import {StartComponent} from '../start/start';
 import {AboutComponent} from '../about/about';

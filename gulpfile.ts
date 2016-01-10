@@ -106,7 +106,6 @@ gulp.task('inject:development', function() {
         .pipe(plugins.inject(svgFiles, {transform: svgFileContents}))
         .pipe(gulp.dest(config.DEST_DIRECTORY))
         .pipe(browsersync.reload({stream: true}));
-
 });
 
 
