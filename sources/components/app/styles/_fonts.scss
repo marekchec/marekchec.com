@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'Linotype-bold';
+    src: url('../assets/fonts/sourcesanspro-bold-webfont.eot'); /* IE9 Compat Modes */
+    src: url('../assets/fonts/sourcesanspro-bold-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../assets/fonts/sourcesanspro-bold-webfont.woff') format('woff'), /* Modern Browsers */
+    url('../assets/fonts/sourcesanspro-bold-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../assets/fonts/sourcesanspro-bold-webfont.svg#e6049cf96e812311f7b7844909997ef0') format('svg'); /* Legacy iOS */
+
+    font-style:   normal;
+    font-weight:  600;
+}
+
+@font-face {
+    font-family: 'Linotype-normal';
+    src: url('../assets/fonts/sourcesanspro-regular-webfont.eot'); /* IE9 Compat Modes */
+    src: url('../assets/fonts/sourcesanspro-regular-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../assets/fonts/sourcesanspro-regular-webfont.woff') format('woff'), /* Modern Browsers */
+    url('../assets/fonts/sourcesanspro-regular-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../assets/fonts/sourcesanspro-regular-webfont.svg#6557b90cd77761904d0ae3745bcde0b1') format('svg'); /* Legacy iOS */
+
+    font-style:   normal;
+    font-weight:  400;
+}
+
+@font-face {
+    font-family: 'Linotype-thin';
+    src: url('../assets/fonts/sourcesanspro-light-webfont.eot'); /* IE9 Compat Modes */
+    src: url('../assets/fonts/sourcesanspro-light-webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../assets/fonts/sourcesanspro-light-webfont.woff') format('woff'), /* Modern Browsers */
+    url('../assets/fonts/sourcesanspro-light-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../assets/fonts/sourcesanspro-light-webfont.svg#33b85727304f5b043b7c1f1d5e4e2207') format('svg'); /* Legacy iOS */
+
+    font-style:   normal;
+    font-weight:  200;
+}
+

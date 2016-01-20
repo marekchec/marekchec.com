@@ -7,34 +7,28 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <base href="/">
-
-        <!-- inject:css -->
-        <!-- endinject -->
-
     </head>
     <body class="PFX-body">
-        <div style="height: 0; width: 0; position: absolute; visibility: hidden">
-            <!-- inject:svg -->
-            <!-- endinject -->
-        </div>
-            <app>Loading...</app>
 
-        <!-- shims:js -->
-        <!-- endinject -->
+        <app>Loading...</app>
+
+        <!-- build:js scripts/scripts.js -->
+            <!-- libs:js -->
+            <!-- endinject -->
+        <!-- endbuild -->
 
         <script>
             System.config({
-                "defaultJSExtensions":true
-            })
-        </script>
-
-        <!-- libs:js -->
-        <!-- endinject -->
-
-        <script>
-            System.import('bootstrap').catch(function(error) {
-                console.error('index.html:: ', error);
+                packages: {
+                    components: {
+                        format: 'register',
+                        defaultExtension: 'js'
+                    }
+                }
             });
+            System.import('boot.js')
+                    .then(null, console.error.bind(console));
         </script>
+
     </body>
 </html>
