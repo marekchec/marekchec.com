@@ -3,6 +3,7 @@ import {join} from 'path';
 export const ROOT_DIR           = './';
 export const DEST_DIR           = './dist';
 export const SOURCES_DIR        = './sources';
+export const SVG_DEST           = join(DEST_DIR, 'assets/icons');
 
 export const BROWSERSYNC = {
     baseDir: [DEST_DIR, ROOT_DIR],
@@ -15,6 +16,7 @@ export const LIB_SOURCES = [
     'node_modules/systemjs/dist/system.src.js',
     'node_modules/rxjs/bundles/Rx.js',
     'node_modules/angular2/bundles/angular2.js',
+    'node_modules/angular2/bundles/http.js',
     'node_modules/angular2/bundles/router.js',
     'node_modules/gsap/src/minified/TweenMax.min.js'
 ];

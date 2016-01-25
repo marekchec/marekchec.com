@@ -9,9 +9,9 @@ import * as fs              from 'fs';
 let plugins = require("gulp-load-plugins")();
 
 
-// -------------------------------------------------------------------
-//  Clean tasks
-// -------------------------------------------------------------------
+// -----------------------------------------
+//  Task: clean
+// -----------------------------------------
 
 gulp.task('clean:dist', done => {
     del(config.DEST_DIR).then(() => {
@@ -20,46 +20,42 @@ gulp.task('clean:dist', done => {
 });
 
 
-// -------------------------------------------------------------------
-//  Copy tasks
-// -------------------------------------------------------------------
+// -----------------------------------------
+//  Task: copy
+// -----------------------------------------
 
 gulp.task('copy:assets', () => {
     return gulp.src(config.ASSETS_SOURCES, {base: config.SOURCES_DIR})
         .pipe(gulp.dest(config.DEST_DIR));
 });
 
-// -------------------------------------------------------------------
-//  Svg
-// -------------------------------------------------------------------
 
-//gulp.task('svg', () => {
-//    let destDir     = '/directives/svgIcon';
-//    let filename    = 'svgList';
-//    var tsFile;
-//
-//    fs.writeFile(join(destDir, filename, '.ts'), tsFile, function(error) {
-//        if(error) {
-//            return console.log(error);
-//        }
-//
-//        console.log("The file was saved!");
-//    });
-//});
+// -----------------------------------------
+//  Task: svg
+// -----------------------------------------
 
-gulp.task('svgstore', function () {
-    return gulp.src('sources/assets/svgs/*.svg')
+gulp.task('svgstore', done => {
+    var svgs = gulp.src(join(config.SOURCES_DIR, 'assets/svgs/*.svg'))
         .pipe(plugins.svgmin())
-        .pipe(plugins.svgstore())
-        .pipe(gulp.dest('test/dest'));
+        .pipe(plugins.svgstore({ inlineSvg: true }));
+
+    function fileContents (filePath, file) {
+        return file.contents.toString();
+    }
+
+    plugins.file('svgs.html', '<!-- icons:svg --><!-- endinject -->')
+        .pipe(plugins.inject(svgs, { name: 'icons', transform: fileContents, removeTags: true }))
+        .pipe(gulp.dest(join(config.DEST_DIR, 'assets/icons')));
+
+    done();
 });
 
 
-// -------------------------------------------------------------------
-//  Compile scss files
-// -------------------------------------------------------------------
+// -----------------------------------------
+//  Task: compile scss
+// -----------------------------------------
 
-gulp.task('scss', () => {
+gulp.task('compile:scss', () => {
     function getOrderedScssReferences() {
         return gulp.src(config.SCSS_SOURCES, {read: false})
             .pipe(plugins.order(config.SCSS_SOURCES, {base: config.ROOT_DIR}));
@@ -79,12 +75,7 @@ gulp.task('scss', () => {
         .pipe(gulp.dest(config.DEST_DIR))
 });
 
-
-// -------------------------------------------------------------------
-//  Compile typescript files
-// -------------------------------------------------------------------
-
-gulp.task('typescript', () => {
+gulp.task('compile:typescript', () => {
     var tsProject = plugins.typescript.createProject('tsconfig.json', {
         typescript: require('typescript'),
         module: 'system'
@@ -97,25 +88,25 @@ gulp.task('typescript', () => {
 });
 
 
-// -------------------------------------------------------------------
-//  Inject tasks
-// -------------------------------------------------------------------
+// -----------------------------------------
+//  Task: inject
+// -----------------------------------------
 
-gulp.task('inject:libs', () => {
+gulp.task('inject', () => {
     function getOrderedLibReferences() {
         return gulp.src(config.LIB_SOURCES, {read: false})
             .pipe(plugins.order(config.LIB_SOURCES, {base: config.ROOT_DIR}));
     }
 
-    return gulp.src(join(config.DEST_DIR, 'index.html'))
+    gulp.src(join(config.DEST_DIR, 'index.html'))
         .pipe(plugins.inject(getOrderedLibReferences(), {name: 'libs', relative: true}))
         .pipe(gulp.dest(config.DEST_DIR));
 });
 
 
-// -------------------------------------------------------------------
-//  Browsersync
-// -------------------------------------------------------------------
+// -----------------------------------------
+//  Task: browsersync
+// -----------------------------------------
 
 gulp.task('browsersync', () => {
     browsersync.init({
@@ -127,11 +118,11 @@ gulp.task('browsersync', () => {
     });
 
     plugins.watch(join(config.SOURCES_DIR, '**/*.ts'), function () {
-        runSequence('typescript')
+        runSequence('compile:typescript')
     });
 
     plugins.watch(join(config.SOURCES_DIR, '**/*.scss'), function () {
-        runSequence('scss')
+        runSequence('compile:scss')
     });
 
     plugins.watch(config.ASSETS_SOURCES, function () {
@@ -141,9 +132,9 @@ gulp.task('browsersync', () => {
 });
 
 
-// -------------------------------------------------------------------
-//  Minify
-// -------------------------------------------------------------------
+// -----------------------------------------
+//  Task: minify
+// -----------------------------------------
 
 gulp.task('minify:index', () => {
     return gulp.src(join(config.DEST_DIR, 'index.html'))
@@ -166,19 +157,20 @@ gulp.task('minify:css', () => {
 });
 
 
-// -------------------------------------------------------------------
+// -----------------------------------------
 //  Main tasks
-// -------------------------------------------------------------------
+// -----------------------------------------
 
 gulp.task('default', done => {
     runSequence(
         'clean:dist',
         [
             'copy:assets',
-            'scss',
-            'typescript'
+            'compile:scss',
+            'compile:typescript'
         ],
-        'inject:libs',
+        'inject',
+        'svgstore',
         'browsersync',
         done
     );
@@ -189,10 +181,11 @@ gulp.task('production', done => {
         'clean:dist',
         [
             'copy:assets',
-            'scss',
-            'typescript'
+            'compile:scss',
+            'compile:typescript'
         ],
-        'inject:libs',
+        'inject',
+        'svgstore',
         'minify:index',
         'minify:css',
         'minify:js',
