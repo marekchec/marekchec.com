@@ -1,6 +1,6 @@
 import {Component}                      from 'angular2/core';
-import {OnActivate, OnDeactivate}       from "../../../node_modules/angular2/src/router/interfaces";
-import {ComponentInstruction}           from "../../../node_modules/angular2/src/router/instruction";
+import {OnActivate, OnDeactivate}       from "angular2/src/router/interfaces";
+import {ComponentInstruction}           from "angular2/src/router/instruction";
 
 @Component({
     selector: 'start',
@@ -8,6 +8,11 @@ import {ComponentInstruction}           from "../../../node_modules/angular2/src
     styleUrls: ['./components/start/start.css']
 })
 export class StartComponent implements OnActivate, OnDeactivate{
+
+    // -----------------------------------------
+    //  Lifecycle
+    // -----------------------------------------
+
     routerOnActivate(next: ComponentInstruction, prev: ComponentInstruction) {
         TweenMax.fromTo(document.getElementsByClassName('start_shortcuts')[0], 1, {opacity: 0}, {opacity: 1});
 

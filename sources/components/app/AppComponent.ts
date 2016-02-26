@@ -1,11 +1,11 @@
-import {Component, Inject, ViewEncapsulation}       from 'angular2/core';
-import {RouteConfig, ROUTER_DIRECTIVES}             from 'angular2/router';
-import {Http}                                       from 'angular2/http';
-import {StartComponent}                             from '../../components/start/start';
-import {AboutComponent}                             from '../../components/about/about';
-import {ImpressumComponent}                         from '../../components/impressum/impressum';
-import {SvgIcon}                                    from "../../directives/svgIcon/SvgIconDirective";
-import {SvgIconService}                             from "../../directives/svgIcon/SvgIconService";
+import {Component, Inject, ViewEncapsulation}           from 'angular2/core';
+import {RouteConfig, ROUTER_DIRECTIVES}                 from 'angular2/router';
+import {Http}                                           from 'angular2/http';
+import {SvgIcon}                                        from "../../directives/svgIcon/SvgIconDirective";
+import {SvgIconService}                                 from "../../directives/svgIcon/SvgIconService";
+import {StartComponent}                                 from "../start/StartComponent";
+import {AboutComponent}                                 from "../about/AboutComponent";
+import {ImprintComponent}                               from "../imprint/ImprintComponent";
 
 @Component({
     selector: 'app',
@@ -16,13 +16,24 @@ import {SvgIconService}                             from "../../directives/svgIc
 })
 
 @RouteConfig([
-    { path: '/', component: StartComponent, as: 'Start' },
-    { path: '/about', component: AboutComponent, as: 'About' },
-    { path: '/impressum', component: ImpressumComponent, as: 'Impressum' }
+    {
+        path: '/',
+        component: StartComponent,
+        as: 'Start'
+    },
+    {
+        path: '/about',
+        component: AboutComponent,
+        as: 'About'
+    },
+    {
+        path: '/impressum',
+        component: ImprintComponent,
+        as: 'Imprint'
+    }
 ])
 
 export class AppComponent {
-    private svgIconService:SvgIconService;
 
     // -----------------------------------------
     //  Lifecycle
@@ -32,18 +43,16 @@ export class AppComponent {
      * Constructor
      */
     constructor(
-        SvgIconService:SvgIconService
+        private svgIconService:SvgIconService
     ) {
-        this.svgIconService = SvgIconService;
-
-        this.setSvgTemplate();
+        this.setSvgTemplatePath();
     }
 
     // -----------------------------------------
     //  Private mehods
     // -----------------------------------------
 
-    private setSvgTemplate() {
+    private setSvgTemplatePath() {
         this.svgIconService.templatePath = './assets/icons/svgs.html';
     }
 }
