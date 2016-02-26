@@ -30,13 +30,30 @@
     cursor: pointer;
     display: block;
     float: left;
-    height: 200px;
+    min-height: 200px;
+    padding: 3rem;
     transition: .4s all ease;
     width: 33.3%;
 
     &:hover {
         background: #e8e8e8;
     }
+}
+
+.start_shortcuts_title {
+    font-size: 3rem;
+    font-weight: 200;
+    margin: 0 0 2rem;
+    text-align: center;
+}
+
+.start_shortcuts_subtitle {
+    color: #a9a9a9;
+    font-size: 1.5rem;
+    font-weight: 200;
+    line-height: 1.3;
+    padding: 0 8rem;
+    text-align: center;
 }
 
 .start_shortcuts_item-last {
