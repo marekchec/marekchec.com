@@ -1,9 +1,9 @@
 import {Component} from 'angular2/core';
 
 @Component({
-    selector: 'impressum',
-    templateUrl: './components/impressum/impressum.html',
-    styleUrls: ['./components/impressum/impressum.css']
+    selector: 'imprint',
+    templateUrl: './components/imprint/imprint.html',
+    styleUrls: ['./components/imprint/imprint.css']
 })
 
-export class ImpressumComponent {}
+export class ImprintComponent {}
