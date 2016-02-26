@@ -30,6 +30,7 @@ export const SCSS_SOURCES = [
 ];
 
 export const ASSETS_SOURCES = [
+    join('!' + SOURCES_DIR, 'index.html'),
     join(SOURCES_DIR, '**/*.html'),
     join(SOURCES_DIR, '**/*.{jpg,png}'),
     join(SOURCES_DIR, 'assets/fonts/**/*'),

@@ -29,6 +29,11 @@ gulp.task('copy:assets', () => {
         .pipe(gulp.dest(config.DEST_DIR));
 });
 
+gulp.task('copy:index', () => {
+    return gulp.src(join(config.SOURCES_DIR, 'index.html'), {base: config.SOURCES_DIR})
+        .pipe(gulp.dest(config.DEST_DIR));
+});
+
 
 // -----------------------------------------
 //  Task: svg
@@ -165,6 +170,7 @@ gulp.task('default', done => {
     runSequence(
         'clean:dist',
         [
+            'copy:index',
             'copy:assets',
             'compile:scss',
             'compile:typescript'
@@ -180,6 +186,7 @@ gulp.task('production', done => {
     runSequence(
         'clean:dist',
         [
+            'copy:index',
             'copy:assets',
             'compile:scss',
             'compile:typescript'
